@@ -10,10 +10,20 @@ const routes = [
         path: "/", name: "Home", component: Home
     },
     {
-        path: "/access", name: "Access", component: Access
+        path: "/access", 
+        name: "Access",
+        component: () => import("../views/Access.vue")
     },
     {
-        path: "/search", name: "Search", component: Search
+        path: "/search", 
+        name: "Search",
+        component: () => import("../views/Search.vue")
+    },
+    {
+        path: "/results&?query=:query",
+        name: "results",
+        props: route => ({...route.params, query: route.params.query}),
+        component: () => import("../views/Results.vue")
     },
     // /show/?showId/seasons --> Endpoint de seasons findAll
     // /show/?ShowId/seasons/?seasonId --> Endpoint de season findById
