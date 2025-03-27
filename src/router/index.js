@@ -15,14 +15,20 @@ const routes = [
         component: () => import("../views/Access.vue")
     },
     {
-        path: "/search", 
+        path: "/search",
         name: "Search",
         component: () => import("../views/Search.vue")
     },
     {
-        path: "/results&?query=:query",
+        path: "/results/:query?",
         name: "results",
         props: route => ({...route.params, query: route.params.query}),
+        component: () => import("../views/Results.vue")
+    },
+    {
+        path: "/shows/:id",
+        name: "shows",
+        props: route => ({...route.params, query: route.params.id}),
         component: () => import("../views/Results.vue")
     },
     // /show/?showId/seasons --> Endpoint de seasons findAll

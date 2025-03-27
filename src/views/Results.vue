@@ -1,20 +1,19 @@
 <template>
-    <section v-if="events" :key="events" class="event__card__container">
+    <section v-if="shows" :key="shows" class="show__card__container">
         <h1>Resultados</h1>
-        <article class="event__card" v-for="event in events" :key="event.id">
-            <router-link  :to="{name: 'event', params: {id: event.id}}">
-                <img v-if="event.images" :src="event.images[0].url" :alt="event.name">
-                <div class="event__card__content">
+        <article class="show__card" v-for="show in shows" :key="show.id">
+            <router-link  :to="{name: 'shows', params: {id: show.id}}">
+                <img v-if="show.images" :src="show.images[0].url" :alt="show.name">
+                <div class="show__card__content">
                     <h2>
-                        {{ event.name }}
+                        {{ show.name }}
                     </h2>
-                    <p v-if="!event.dates.start.dateTBD && !event.dates.start.dateTBA">{{ event.dates.start.localDate }}</p>
-                    <p v-if=" event._embedded && event._embedded.venues">{{ event._embedded.venues[0].country.name }}, {{ event._embedded.venues[0].city.name }}</p>
+                    <p>{{ show.description }}</p>
                 </div>
             </router-link> 
         </article>
     </section>
-    <section v-else-if="events === false">
+    <section v-else-if="shows === false">
         <h2>No hay resultados</h2>
     </section>
     <section v-else-if="error">
@@ -26,35 +25,31 @@
 export default {
     props: {
         query: {type: String, required: false},
-        type: {type: String, required: false},
-        country: {type: String, required: false},
-        date: {type: String, required: false},
     },
     data() {
         return {
-            events: null,
+            shows: null,
             error: false,
         }
     },
     watch: {
         $route (to, from) {
-            this.searchEvents()
+            this.searchshows()
         }
     },
     async created() {
-        await this.searchEvents()
+        await this.searchshows()
     },
     methods: {
-        async searchEvents() {
+        async searchshows() {
             try {
-                const data = await fetch(`https://app.ticketmaster.com/discovery/v2/events.json?keyword=${this.$props.query}&countryCode=${this.$props.country}&classificationName=${this.$props.type}&startDateTime=${this.$props.date}T00:00:00Z&apikey=S1sDAS05dZI5JmtvdarQaZN5tFxkOUpr`)
+                const data = await fetch(`http://localhost:8080/api/shows/sorted?name=${this.$props.query}`)
                 const results = await data.json()
-                if (results._embedded) {
-                    this.events = results._embedded.events
-                    console.log(this.events)
+                if (results) {
+                    this.shows = results
                     return
                 }
-                this.events = false
+                this.shows = false
             }
             catch {
                 this.error = true

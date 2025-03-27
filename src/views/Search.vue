@@ -11,7 +11,7 @@
                 </div>
             </fieldset>
             <fieldset class="form__row">
-                <router-link class="form__button" :to="{name: 'results', params: {query: this.showQuery}}">Buscar</router-link>
+                <router-link class="form__button" :to="{name: 'results', params: {query: showQuery}}">Buscar</router-link>
             </fieldset>
         </form>
     </section>
