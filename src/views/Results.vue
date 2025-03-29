@@ -2,8 +2,8 @@
     <section v-if="shows" :key="shows" class="show__card__container">
         <h1>Resultados</h1>
         <article class="show__card" v-for="show in shows" :key="show.id">
-            <router-link  :to="{name: 'shows', params: {id: show.id}}">
-                <img v-if="show.images" :src="show.images[0].url" :alt="show.name">
+            <router-link :to="{name: 'shows', params: {id: show.id}, props: {name: show.name, description: show.description}}">
+                <!-- <img v-if="show.images" :src="show.images[0].url" :alt="show.name"> -->
                 <div class="show__card__content">
                     <h2>
                         {{ show.name }}

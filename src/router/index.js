@@ -28,8 +28,14 @@ const routes = [
     {
         path: "/shows/:id",
         name: "shows",
-        props: route => ({...route.params, query: route.params.id}),
-        component: () => import("../views/Results.vue")
+        props: route => ({...route.params, id: route.params.id}),
+        component: () => import("../views/Show.vue")
+    },
+    {
+        path: "/season/:id",
+        name: "seasons",
+        props: route => ({...route.params, id: route.params.id}),
+        component: () => import("../views/Season.vue")
     },
     // /show/?showId/seasons --> Endpoint de seasons findAll
     // /show/?ShowId/seasons/?seasonId --> Endpoint de season findById
