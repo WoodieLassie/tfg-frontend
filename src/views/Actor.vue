@@ -1,22 +1,24 @@
 <template>
-    <section v-if="season">
-        <section class="show__information">
-            <article class="show__header">
+    <section v-if="actor">
+        <section class="actor__information">
+            <article class="actor__header">
                 <h1>
-                {{ season.seasonNum }}
+                {{ actor.name }}
                 </h1>
                 <!-- <img v-if="show.images" :src="show.images[0].url" :alt="show.name"> -->
             </article>
-            <article class="show__body">
-                <p>{{ season.description }}</p>
+            <article class="actor__body">
+                <p>Género: {{ actor.gender }}</p>
+                <p>Nacionalidad: {{ actor.nationality }}</p>
+                <p>Fecha de nacimiento: {{ actor.birthDate }}</p>
+                <p>Lugar de nacimiento: {{ actor.birthLocation }}</p>
             </article>
         </section>
-        <section class="show__seasons">
-            <article v-for = "episode in episodes" class="season__episode">
-                <div class="show__season__info">
-                    <router-link :to="{name: 'episodes', params: {id: episode.id}}">Episodio {{ episode.episodeNum }}</router-link>
-                </div>
-            </article>
+        <section class="actor__character">
+            <h2>Personaje que interpreta</h2>
+                <article class="actor__character__info">
+                    <router-link :to="{name: 'characters', params: {id: actor.character.id}}"> {{ actor.character.name }}</router-link>
+                </article>
         </section>
     </section>
 </template>
@@ -27,8 +29,7 @@
     export default {
         data() {
             return {
-                season: null,
-                episodes: null,
+                actor: null,
                 user: null,
                 token: cookies.get("token")
             }
@@ -37,12 +38,9 @@
             id: {type: String, required: true}
         },
         async created() {
-            const seasonData = await fetch(`http://localhost:8080/api/seasons/${this.$props.id}`)
-            const seasonResponse = await seasonData.json()
-            this.season = seasonResponse
-            const episodesData = await fetch(`http://localhost:8080/api/episodes?seasonId=${this.season.seasonNum}`)
-            const episodesResponse = await episodesData.json()
-            this.episodes = episodesResponse
+            const actorData = await fetch(`http://localhost:8080/api/actors/${this.$props.id}`)
+            const actorResponse = await actorData.json()
+            this.actor = actorResponse
             // cookies.addChangeListener(() => {
             //     this.token = cookies.get("token")
             //     this.checkUser()
