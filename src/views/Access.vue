@@ -93,7 +93,8 @@
                 })
                 const response = await data.json()
                 if (data.status === 200) {
-                    console.log(response.access_token)
+                    cookies.set("token", response.access_token, {maxAge: 86400, sameSite: "strict", path:"/"})
+                    this.$router.push("/")
                 }
                 else {
                     this.createLoginError()
