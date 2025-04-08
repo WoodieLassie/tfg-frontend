@@ -1,12 +1,16 @@
-<script>
-
-</script>
-
 <template>
   <div>
-    <router-link to="/">Home</router-link>
-    <router-link to="/access">Access</router-link>
-    <router-link to="/search">Search</router-link>
+    <NavBar></NavBar>
     <router-view></router-view>
   </div>
 </template>
+
+<script>
+import NavBar from './components/NavBar.vue';
+export default {
+  components : {
+    NavBar
+  }
+}
+
+</script>

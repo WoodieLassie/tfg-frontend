@@ -1,6 +1,4 @@
 import Home from "@/views/Home.vue"
-import Access from "@/views/Access.vue"
-import Search from "@/views/Search.vue"
 import {useCookies} from "@vueuse/integrations/useCookies"
 import { createRouter, createWebHistory } from "vue-router"
 
@@ -54,6 +52,12 @@ const routes = [
         name: "actors",
         props: route => ({...route.params, id: route.params.id}),
         component: () => import("../views/Actor.vue")
+    },
+    {
+        path: "/profile/:id",
+        name: "profile",
+        props: route => ({...route.params, id: route.params.id}),
+        component: () => import("../views/Profile.vue")
     },
     // /show/?showId/seasons --> Endpoint de seasons findAll
     // /show/?ShowId/seasons/?seasonId --> Endpoint de season findById

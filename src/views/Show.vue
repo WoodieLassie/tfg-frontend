@@ -9,6 +9,15 @@
             </article>
             <article class="show__body">
                 <p>{{ show.description }}</p>
+                <p>{{ averageRating }}</p>
+                <select @change="sendRating" v-if ="user" :key = "user" v-model="selectedRating">
+                    <option value="" selected disabled>-</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
                 <button @click="saveshow" v-if="!saved && user">Guardar show</button>
                 <button @click="removeshow" v-if="saved && user">Borrar show</button>
             </article>
@@ -53,6 +62,8 @@
                 user: null,
                 saved: null,
                 commentBox: "",
+                selectedRating: null,
+                averageRating: null,
                 token: cookies.get("token")
             }
         },
@@ -75,6 +86,7 @@
             await this.checkUser()
             await this.updateComments()
             await this.checkIfSaved()
+            await this.checkRating()
         },
         methods: {
             async sendComment() {
@@ -152,6 +164,33 @@
                         this.saved = null
                     }
                 }
+            },
+            async sendRating() {
+                const data = await fetch(`http://localhost:8080/api/reviews`, {
+                    method: "post",
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + cookies.get("token")
+                    },
+                    body: JSON.stringify({
+                        rating: this.selectedRating,
+                        showId: this.$props.id
+                    })
+                }
+            )
+                this.checkRating()
+            },
+            async checkRating() {
+                const data = await fetch(`http://localhost:8080/api/reviews/${this.$props.id}`, {
+                    method: "get",
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                    }
+                })
+                const response = await data.json()
+                this.averageRating = response.averageRating
             }
         }
     }
